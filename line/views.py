@@ -5,4 +5,5 @@ def index(request):
     return HttpResponse("Hello World")
 
 def callback(request):
-    return HttpResponse("callback")
+    context_instance=RequestContext(request)
+    return HttpResponse("callback" + context_instance)
