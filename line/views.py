@@ -22,10 +22,11 @@ def callback(request):
     for event in events:
         reply_token = event['replyToken']
         if event['type'] == 'message':
-            reply = e['message']['text']
-        else:
-            reply = 'テキストメッセージのみ受付けます。'
-        reply_message(reply_token, reply)
+            if event['message']['type'] == 'text':
+                reply = event['message']['text']
+            else:
+                reply = 'テキストメッセージのみ受付けます。'
+            reply_message(reply_token, reply)
     return HttpResponse("callback")
 
 def reply_message(reply_token, reply):
