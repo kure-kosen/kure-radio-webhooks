@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.logging import info, error
 
 import json
 import requests
@@ -18,8 +19,15 @@ def index(request):
 
 @csrf_exempt
 def callback(request):
-    action = json.loads(request.body.decode('utf-8'))['action']
-    board_name = action['data']['board']['name']
-    print(board_name)
+    try:
+        action = json.loads(request.body.decode('utf-8'))['action']
+        board_name = action['data']['board']['name']
+        print(board_name)
+        from pprint import pprint
+        pprint(action)
+    except json.JSONDecoder as e:
+        error(e.msg)
+    except Exception as e:
+        error(e.msg)           
     return HttpResponse("callback")
 
