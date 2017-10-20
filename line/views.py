@@ -24,7 +24,12 @@ def callback(request):
         if event['type'] == 'message':
             if event['message']['type'] == 'text':
                 reply = event['message']['text']
-                reply += event['source']
+                if 'userId' in event['source']:
+                    reply += 'userId:' + event['source']['userId']
+                if 'groupId' in event['source']:
+                    reply += 'groupId:' + event['source']['groupId']
+                if 'roomId' in event['source']:
+                    reply += 'roomId:' + event['source']['roomId']
             else:
                 reply = 'テキストメッセージのみ受付けます。'
             reply_message(reply_token, reply)
