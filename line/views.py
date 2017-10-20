@@ -7,6 +7,7 @@ import requests
 import os
 
 REPLY_ENDPOINT = 'https://api.line.me/v2/bot/message/reply'
+PUSH_ENDPOINT = 'https://api.line.me/v2/bot/message/push'
 ACCESS_TOKEN = os.getenv('LINE_ACCESS_TOKEN')
 HEADER = {
     "Content-Type": "application/json",
@@ -40,9 +41,22 @@ def reply_message(reply_token, reply):
         "replyToken":reply_token,
         "messages":[
             {
-                "type":"text",
+                "type": "text",
                 "text": reply
             }
         ]
     }
     requests.post(REPLY_ENDPOINT, headers=HEADER, data=json.dumps(reply_body))
+
+def push_message(to, message):
+    push_body = {
+        "to": to,
+        "messages":[
+            {
+                "type": "text",
+                "text": message
+            }
+        ]
+    }
+    requests.post(PUSH_ENDPOINT, headers=HEADER, data=json.dumps(push_body))
+    
