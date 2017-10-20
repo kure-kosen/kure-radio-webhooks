@@ -6,7 +6,7 @@ import json
 import requests
 import os
 
-from trello.views import push_message
+from line.views import push_message
 
 REPLY_ENDPOINT = 'https://api.line.me/v2/bot/message/reply'
 ACCESS_TOKEN = os.getenv('LINE_ACCESS_TOKEN')
