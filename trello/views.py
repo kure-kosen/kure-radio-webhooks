@@ -32,13 +32,13 @@ def callback(request):
             card_name = entities['card']['text']
             member_name = entities['memberCreator']['text']
             body = f'カード「{card_name}」がリスト「{list_name}」に追加されました。\n追加者:{member_name}'
-            push_message(LINE_USERID, body)
+            push_message(LINE_GROUPID, body)
         elif action['type'] == 'action_move_card_from_list_to_list':
             list_name = entities['list']['text']
             card_name = entities['card']['text']
             member_name = entities['memberCreator']['text']
             body = f'カード「{card_name}」がリスト「{list_name}」に移動されました。\n移動者:{member_name}'
-            push_message(LINE_USERID, body)
+            push_message(LINE_GROUPID, body)
     except Exception as e:
         pass
     return HttpResponse("callback")
