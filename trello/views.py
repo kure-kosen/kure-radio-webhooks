@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from kure_radio_webhooks.logging import info, error
 
 import json
 import requests
@@ -26,8 +25,8 @@ def callback(request):
         from pprint import pprint
         pprint(action)
     except json.JSONDecoder as e:
-        error(e.msg)
+        pass
     except Exception as e:
-        error(e.msg)           
+        pass
     return HttpResponse("callback")
 
