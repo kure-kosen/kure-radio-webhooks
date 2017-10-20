@@ -7,6 +7,7 @@ import requests
 import os
 
 REPLY_ENDPOINT = 'https://api.line.me/v2/bot/message/reply'
+PUSH_ENDPOINT = 'https://api.line.me/v2/bot/message/push'
 ACCESS_TOKEN = os.getenv('LINE_ACCESS_TOKEN')
 HEADER = {
     "Content-Type": "application/json",
@@ -23,10 +24,15 @@ def callback(request):
         reply_token = event['replyToken']
         if event['type'] == 'message':
             if event['message']['type'] == 'text':
-                reply = event['message']['text']
-            else:
-                reply = 'テキストメッセージのみ受付けます。'
-            reply_message(reply_token, reply)
+                if 'debug' in event['message']['text']:
+                    reply = event['message']['text']
+                    if 'userId' in event['source']:
+                        reply += '\nuserId:' + event['source']['userId']
+                    if 'groupId' in event['source']:
+                        reply += '\ngroupId:' + event['source']['groupId']
+                    if 'roomId' in event['source']:
+                        reply += '\nroomId:' + event['source']['roomId']
+                    reply_message(reply_token, reply)
     return HttpResponse("callback")
 
 def reply_message(reply_token, reply):
@@ -34,9 +40,22 @@ def reply_message(reply_token, reply):
         "replyToken":reply_token,
         "messages":[
             {
-                "type":"text",
+                "type": "text",
                 "text": reply
             }
         ]
     }
     requests.post(REPLY_ENDPOINT, headers=HEADER, data=json.dumps(reply_body))
+
+def push_message(to, message):
+    push_body = {
+        "to": to,
+        "messages":[
+            {
+                "type": "text",
+                "text": message
+            }
+        ]
+    }
+    requests.post(PUSH_ENDPOINT, headers=HEADER, data=json.dumps(push_body))
+    
