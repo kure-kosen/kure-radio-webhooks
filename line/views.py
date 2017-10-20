@@ -24,6 +24,7 @@ def callback(request):
         if event['type'] == 'message':
             if event['message']['type'] == 'text':
                 reply = event['message']['text']
+                reply += event['source']
             else:
                 reply = 'テキストメッセージのみ受付けます。'
             reply_message(reply_token, reply)
