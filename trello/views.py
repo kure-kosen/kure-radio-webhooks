@@ -19,7 +19,7 @@ def index(request):
 @csrf_exempt
 def callback(request):
     try:
-        action = json.loads(request.body.decode('utf-8'))['action']
+        action = json.loads(request.body.decode('utf-8'))['action']['data']
         from pprint import pprint
         pprint(action)
         entities = action['display']['entities']
