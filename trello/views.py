@@ -35,10 +35,11 @@ def callback(request):
             body = f'カード「{card_name}」がリスト「{list_name}」に追加されました。\n追加者:{member_name}'
             push_message(LINE_GROUPID, body)
         elif action_type == 'action_move_card_from_list_to_list':
-            list_name = entities['list']['text']
+            after_list_name = entities['listAfter']['text']
+            before_list_name = entities['listBefore']['text']
             card_name = entities['card']['text']
             member_name = entities['memberCreator']['text']
-            body = f'カード「{card_name}」がリスト「{list_name}」に移動されました。\n移動者:{member_name}'
+            body = f'カード「{card_name}」がリスト「{before_list_name}」からリスト「{after_list_name}」に移動されました。\n移動者:{member_name}'
             push_message(LINE_GROUPID, body)
     except Exception as e:
         pass
