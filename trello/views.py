@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.logging import info, error
+from kure_radio_webhooks.logging import info, error
 
 import json
 import requests
