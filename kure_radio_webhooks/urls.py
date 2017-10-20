@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^line/', include('line.urls')),
+    url(r'^trello/', include('trello.urls')),
     url(r'^admin/', admin.site.urls),
 ]
