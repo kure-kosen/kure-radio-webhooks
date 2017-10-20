@@ -19,16 +19,16 @@ def index(request):
 @csrf_exempt
 def callback(request):
     try:
-        action = json.loads(request.body.decode('utf-8'))['action']['data']
+        action = json.loads(request.body.decode('utf-8'))['action']
         from pprint import pprint
         pprint(action)
         entities = action['display']['entities']
-        if action['type'] == 'action_create_card':
+        if action['type'] == 'createCard':
             list_name = entities['list']['text']
             card_name = entities['card']['text']
             member_name = entities['memberCreator']['text']
             body = f'リスト名:{list_name} カード名:{card_name} メンバー名:{member_name}'
-            print(body)
+            pprint(body)
         elif action['type'] == 'action_move_card_from_list_to_list':
             pass               
     except Exception as e:
