@@ -18,5 +18,8 @@ def index(request):
 
 @csrf_exempt
 def callback(request):
+    action = json.loads(request.body.decode('utf-8'))['action']
+    board_name = action['data']['board']['name']
+    print(board_name)
     return HttpResponse("callback")
 
