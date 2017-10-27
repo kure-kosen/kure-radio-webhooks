@@ -26,14 +26,28 @@ def callback(request):
             if event['message']['type'] == 'text':
                 if 'debug' in event['message']['text']:
                     reply = event['message']['text']
-                    if 'userId' in event['source']:
-                        reply += '\nuserId:' + event['source']['userId']
-                    if 'groupId' in event['source']:
-                        reply += '\ngroupId:' + event['source']['groupId']
-                    if 'roomId' in event['source']:
-                        reply += '\nroomId:' + event['source']['roomId']
+                    reply += get_line_ids(event['source'])
                     reply_message(reply_token, reply)
+                elif 'おにぎり' in event['message']['text']:
+                    reply = 'おにぎりくんだよ。呼んだ？'
+                    reply_message(reply_token, reply)
+                else:
+                    pass
+            else:
+                 pass
+        else:
+            pass
     return HttpResponse("callback")
+
+def get_line_ids(source):
+    if 'userId' in source:
+        reply += '\nuserId:' + source['userId']
+    if 'groupId' in source:
+        reply += '\ngroupId:' + source['groupId']
+    if 'roomId' in event['source']:
+        reply += '\nroomId:' + source['roomId']
+    return reply
+
 
 def reply_message(reply_token, reply):
     reply_body = {
