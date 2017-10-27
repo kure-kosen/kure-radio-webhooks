@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.http import HttpResponse
 
 urlpatterns = [
+    url(r'^$', lambda r: HttpResponse('response ok.')),
     url(r'^line/', include('line.urls')),
     url(r'^trello/', include('trello.urls')),
     url(r'^admin/', admin.site.urls),
