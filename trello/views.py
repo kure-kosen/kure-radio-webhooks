@@ -42,9 +42,8 @@ def callback(request):
         pass
     return HttpResponse("callback")
 
-def add_card(idList, closed=False, desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource=''):
+def add_card(idList,  desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource=''):
     query = {
-        "closed": closed,
         "desc": desc,
         "due": due,
         "fileSource": fileSource,
@@ -62,3 +61,33 @@ def add_card(idList, closed=False, desc='', due='', fileSource='', idAttachmentC
     }
     r = requests.post("https://api.trello.com/1/cards", json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN})
     print(r.text)
+
+def move_card(idCard, idList, closed='', desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource='', dueComplete='', closed=''):
+    query = {
+        "closed": closed,
+        "desc": desc,
+        "due": due,
+        "fileSource": fileSource,
+        "idAttachmentCover": idAttachmentCover,
+        "idBoard": idBoard,
+        "idCardSource": idCardSource,
+        "idLabels": idLabels,
+        "idList": idList,
+        "idMembers": idMembers,
+        "keepFromSource": keepFromSource,
+        "labels": labels,
+        "name": name,
+        "pos": pos,
+        "urlSource": urlSource,
+        "dueComplete": dueComplete
+    }
+    r = requests.put(f'https://api.trello.com/1/cards/{idCard}', json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN})
+    print(r.text)
+
+
+def get_card_id(search_id):
+    query = {"query": search_id}
+    cards = request.get("https://api.trello.com/1/search", json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN}).json()['cards']
+    card_id = cards[0]['id']
+    return card_id
+    
