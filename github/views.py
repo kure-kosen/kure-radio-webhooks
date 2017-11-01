@@ -45,13 +45,13 @@ def callback(request):
             description = url + '\n\n' + body + '\n\nid:' + pr_id
             if action == 'opened' or action_type == 'reopened':
                 add_card(PULLREQUESTS_LIST_ID, name=title, desc=description)
-            elif action == 'labeled':
-                for label in data['pull_request']['labels']
-                    if label['name'] == 'WIP':
-                        card_id = get_card_id('id:'+pr_id)
-                        move_card(card_id, WIP_LIST_ID)
-                    else:
-                        pass
+            # elif action == 'labeled':
+            #     for label in data['pull_request']['labels']
+            #         if label['name'] == 'WIP':
+            #             card_id = get_card_id('id:'+pr_id)
+            #             move_card(card_id, WIP_LIST_ID)
+            #         else:
+            #             pass
             else:
                 pass
         else:
