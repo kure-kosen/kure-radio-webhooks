@@ -62,7 +62,7 @@ def add_card(idList,  desc='', due='', fileSource='', idAttachmentCover='', idBo
     r = requests.post("https://api.trello.com/1/cards", json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN})
     print(r.text)
 
-def move_card(idCard, idList, closed='', desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource='', dueComplete='', closed=''):
+def move_card(idCard, idList, closed='', desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource='', dueComplete=''):
     query = {
         "closed": closed,
         "desc": desc,
