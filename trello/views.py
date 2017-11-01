@@ -8,14 +8,11 @@ import os
 
 from line.views import push_message
 
-REPLY_ENDPOINT = 'https://api.line.me/v2/bot/message/reply'
-ACCESS_TOKEN = os.getenv('LINE_ACCESS_TOKEN')
 LINE_USERID = os.getenv('LINE_USERID')
 LINE_GROUPID = os.getenv('LINE_GROUPID')
-HEADER = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + ACCESS_TOKEN
-}
+
+TRELLO_KEY = os.getenv('TRELLO_KEY')
+TRELLO_TOKEN = os.getenv('TRELLO_TOKEN')
 
 def index(request):
     return HttpResponse("Hello World")
@@ -45,3 +42,23 @@ def callback(request):
         pass
     return HttpResponse("callback")
 
+def add_card(idList, closed=False, desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource=''):
+    query = {
+        "closed": closed,
+        "desc": desc,
+        "due": due,
+        "fileSource": fileSource,
+        "idAttachmentCover": idAttachmentCover,
+        "idBoard": idBoard,
+        "idCardSource": idCardSource,
+        "idLabels": idLabels,
+        "idList": idList,
+        "idMembers": idMembers,
+        "keepFromSource": keepFromSource,
+        "labels": labels,
+        "name": name,
+        "pos": pos,
+        "urlSource": urlSource,
+    }
+    r = requests.post("https://api.trello.com/1/cards", json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN})
+    print(r.text)
