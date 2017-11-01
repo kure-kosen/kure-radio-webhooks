@@ -1,5 +1,5 @@
 """
-WSGI config for kure_radio_webhooks project.
+WSGI config for onigiri project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -12,6 +12,6 @@ import os
 from dj_static import Cling
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kure_radio_webhooks.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "onigiri.settings")
 
 application = Cling(get_wsgi_application())
