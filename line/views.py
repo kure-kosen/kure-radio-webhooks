@@ -40,11 +40,12 @@ def callback(request):
     return HttpResponse("callback")
 
 def get_line_ids(source):
+    reply = ''
     if 'userId' in source:
         reply += '\nuserId:' + source['userId']
     if 'groupId' in source:
         reply += '\ngroupId:' + source['groupId']
-    if 'roomId' in event['source']:
+    if 'roomId' in source:
         reply += '\nroomId:' + source['roomId']
     return reply
 
