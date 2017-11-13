@@ -7,12 +7,14 @@ import requests
 import os
 
 from line.views import push_message
+from pprint import pprint
 
 LINE_USERID = os.getenv('LINE_USERID')
 LINE_GROUPID = os.getenv('LINE_GROUPID')
 
 TRELLO_KEY = os.getenv('TRELLO_KEY')
 TRELLO_TOKEN = os.getenv('TRELLO_TOKEN')
+TRELLO_BOARDID = os.getenv('TRELLO_BOARDID')
 
 def index(request):
     return HttpResponse("Hello World")
@@ -20,8 +22,7 @@ def index(request):
 @csrf_exempt
 def callback(request):
     try:
-        action = json.loads(request.body.decode('utf-8'))['action']
-        from pprint import pprint
+        action = json.loads(request.body.decode('utf-8'))['action']       
         pprint(action)
         entities = action['display']['entities']
         action_type = action['display']['translationKey']
@@ -91,3 +92,18 @@ def get_card_id(search_id):
     card_id = cards[0]['id']
     return card_id
     
+
+def get_cards(board_id, fields):
+    r = requests.get(f'https://api.trello.com/1/{board_id}/id/cards')
+    pprint(r.content)    
+
+def get_due():
+    board_id = get_board_id()
+    fields = ['due']
+    get_cards(board_id, fields)
+    
+
+def get_board_id():
+    return TRELLO_BOARDID
+
+
