@@ -7,15 +7,14 @@ import requests
 import os
 
 from line.views import push_message
+from pprint import pprint
 
-REPLY_ENDPOINT = 'https://api.line.me/v2/bot/message/reply'
-ACCESS_TOKEN = os.getenv('LINE_ACCESS_TOKEN')
 LINE_USERID = os.getenv('LINE_USERID')
 LINE_GROUPID = os.getenv('LINE_GROUPID')
-HEADER = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + ACCESS_TOKEN
-}
+
+TRELLO_KEY = os.getenv('TRELLO_KEY')
+TRELLO_TOKEN = os.getenv('TRELLO_TOKEN')
+TRELLO_BOARDID = os.getenv('TRELLO_BOARDID')
 
 def index(request):
     return HttpResponse("Hello World")
@@ -23,8 +22,7 @@ def index(request):
 @csrf_exempt
 def callback(request):
     try:
-        action = json.loads(request.body.decode('utf-8'))['action']
-        from pprint import pprint
+        action = json.loads(request.body.decode('utf-8'))['action']       
         pprint(action)
         entities = action['display']['entities']
         action_type = action['display']['translationKey']
@@ -44,4 +42,68 @@ def callback(request):
     except Exception as e:
         pass
     return HttpResponse("callback")
+
+def add_card(idList,  desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource=''):
+    query = {
+        "desc": desc,
+        "due": due,
+        "fileSource": fileSource,
+        "idAttachmentCover": idAttachmentCover,
+        "idBoard": idBoard,
+        "idCardSource": idCardSource,
+        "idLabels": idLabels,
+        "idList": idList,
+        "idMembers": idMembers,
+        "keepFromSource": keepFromSource,
+        "labels": labels,
+        "name": name,
+        "pos": pos,
+        "urlSource": urlSource,
+    }
+    r = requests.post("https://api.trello.com/1/cards", json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN})
+    print(r.text)
+
+def move_card(idCard, idList, closed='', desc='', due='', fileSource='', idAttachmentCover='', idBoard='', idCardSource='', idLabels='', idMembers='', keepFromSource='', labels='', name='', pos='top', urlSource='', dueComplete=''):
+    query = {
+        "closed": closed,
+        "desc": desc,
+        "due": due,
+        "fileSource": fileSource,
+        "idAttachmentCover": idAttachmentCover,
+        "idBoard": idBoard,
+        "idCardSource": idCardSource,
+        "idLabels": idLabels,
+        "idList": idList,
+        "idMembers": idMembers,
+        "keepFromSource": keepFromSource,
+        "labels": labels,
+        "name": name,
+        "pos": pos,
+        "urlSource": urlSource,
+        "dueComplete": dueComplete
+    }
+    r = requests.put(f'https://api.trello.com/1/cards/{idCard}', json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN})
+    print(r.text)
+
+
+def get_card_id(search_id):
+    query = {"query": search_id}
+    cards = request.get("https://api.trello.com/1/search", json=query, params={"key": TRELLO_KEY, "token": TRELLO_TOKEN}).json()['cards']
+    card_id = cards[0]['id']
+    return card_id
+    
+
+def get_cards(board_id, fields):
+    r = requests.get(f'https://api.trello.com/1/{board_id}/id/cards')
+    pprint(r.content)    
+
+def get_due():
+    board_id = get_board_id()
+    fields = ['due']
+    get_cards(board_id, fields)
+    
+
+def get_board_id():
+    return TRELLO_BOARDID
+
 

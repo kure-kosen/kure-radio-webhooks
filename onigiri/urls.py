@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^$', lambda r: HttpResponse('response ok.')),
     url(r'^line/', include('line.urls')),
     url(r'^trello/', include('trello.urls')),
+    url(r'^github/', include('github.urls')),
     url(r'^admin/', admin.site.urls),
 ]
